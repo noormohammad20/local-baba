@@ -9,12 +9,17 @@
 //     jashim: 1
 // }
 
-const db = {}
+let db = {}
 const addToDb = item => {
     //three ways to add a property to an object
     //  db.alom= 1
     // db['alom'] = 1
     // db[item] = 1
+
+    const storedTracker = localStorage.getItem('cheka-tracker', JSON.parse(db))
+    if (storedTracker) {
+        db = JSON.parse(storedTracker)
+    }
 
     if (item in db) {
         db[item] = db[item] + 1
@@ -22,5 +27,14 @@ const addToDb = item => {
     else {
         db[item] = 1
     }
-    console.log(db)
+    localStorage.setItem('cheka-tracker', JSON.stringify(db))
+}
+
+const removeItem = item => {
+    const storedTracker = localStorage.getItem('cheka-tracker')
+    if (storedTracker) {
+        const storedObject = JSON.parse(storedTracker)
+        delete storedObject[item]
+        localStorage.setItem('cheka-tracker', JSON.stringify(storedObject))
+    }
 }
